@@ -1,13 +1,23 @@
-
 import * as React from 'react';
 
 function Board() {
-  const squares = Array(9).fill(null);
-  function selectSquare(square) {
+  const [squares, setSquares] = React.useState(Array(9).fill(null));
+  const [nextValue, setNextValue] = React.useState(calculateNextValue(squares));
+  const winner = calculateWinner(squares);
 
+  function selectSquare(square) {
+    if (squares[square] || winner) {
+      return;
+    }
+    const newSquares = [...squares];
+    newSquares[square] = nextValue;
+    setSquares(newSquares);
+    setNextValue(calculateNextValue(newSquares));
   }
 
   function restart() {
+    setSquares(Array(9).fill(null));
+    setNextValue(calculateNextValue(Array(9).fill(null)));
   }
 
   function renderSquare(i) {
@@ -18,35 +28,35 @@ function Board() {
     );
   }
 
+  const status = calculateStatus(winner, squares, nextValue);
+
   return (
     <div>
-      <div >STATUS</div>
-      <div >
+      <div>{status}</div>
+      <div>
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
-      <div >
+      <div>
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
       </div>
-      <div >
+      <div>
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      <button onClick={restart}>
-        restart
-      </button>
+      <button onClick={restart}>Restart</button>
     </div>
   );
 }
 
 function Game() {
   return (
-    <div >
-      <div >
+    <div>
+      <div>
         <Board />
       </div>
     </div>
@@ -58,8 +68,8 @@ function calculateStatus(winner, squares, nextValue) {
   return winner
     ? `Winner: ${winner}`
     : squares.every(Boolean)
-      ? `Scratch: Cat's game`
-      : `Next player: ${nextValue}`;
+    ? `Scratch: Cat's game`
+    : `Next player: ${nextValue}`;
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -93,3 +103,4 @@ function App() {
 }
 
 export default App;
+
