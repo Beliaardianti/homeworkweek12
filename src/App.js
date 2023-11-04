@@ -1,5 +1,16 @@
 import * as React from 'react';
 
+function Square({ value, onClick }) {
+  return (
+    <button
+      className="square bg-black text-green-500 font-bold text-3xl p-8 border   transition-transform transform hover:scale-105"
+      onClick={onClick}
+    >
+      {value}
+    </button>
+  );
+}
+
 function Board() {
   const [squares, setSquares] = React.useState(Array(9).fill(null));
   const [nextValue, setNextValue] = React.useState(calculateNextValue(squares));
@@ -22,48 +33,55 @@ function Board() {
 
   function renderSquare(i) {
     return (
-      <button className="square" onClick={() => selectSquare(i)}>
-        {squares[i]}
-      </button>
+      <Square
+        value={squares[i]}
+        onClick={() => selectSquare(i)}
+      />
     );
   }
 
   const status = calculateStatus(winner, squares, nextValue);
 
+  function renderBoard() {
+    const board = [];
+    for (let i = 0; i < 9; i++) {
+      board.push(renderSquare(i));
+    }
+  
+    return (
+      <div className="grid grid-cols-3">
+        {board}
+      </div>
+    );
+  }
+  
   return (
-    <div>
-      <div>{status}</div>
-      <div>
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div>
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div>
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-      <button onClick={restart}>Restart</button>
+    <div className=" flex-col items-center">
+      <div className="text-4xl font-bold mb-8 text-green-700">{status}</div>
+      {renderBoard()}
+      <button
+  className="bg-green-800 text-white px-6 py-3 mt-8  rounded-lg hover:bg-green-500 transition-transform transform hover:scale-105 "
+  onClick={restart}
+>
+  Restart
+</button>
+
     </div>
   );
+  
+  
+  
+
 }
 
 function Game() {
   return (
-    <div>
-      <div>
-        <Board />
-      </div>
+    <div className="flex justify-center items-center h-screen bg-black">
+      <Board />
     </div>
   );
 }
 
-// eslint-disable-next-line no-unused-vars
 function calculateStatus(winner, squares, nextValue) {
   return winner
     ? `Winner: ${winner}`
@@ -72,12 +90,10 @@ function calculateStatus(winner, squares, nextValue) {
     : `Next player: ${nextValue}`;
 }
 
-// eslint-disable-next-line no-unused-vars
 function calculateNextValue(squares) {
   return squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O';
 }
 
-// eslint-disable-next-line no-unused-vars
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -89,12 +105,14 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
   }
+
   return null;
 }
 
@@ -103,4 +121,3 @@ function App() {
 }
 
 export default App;
-
