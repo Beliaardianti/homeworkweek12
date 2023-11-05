@@ -3,7 +3,7 @@ import * as React from 'react';
 function Square({ value, onClick }) {
   return (
     <button
-      className="square bg-black text-green-500 font-bold text-3xl p-8 border   transition-transform transform hover:scale-105"
+      className="square bg-black text-green-500 font-bold text-3xl p-8 border transition-transform transform hover:scale-105"
       onClick={onClick}
     >
       {value}
@@ -56,16 +56,15 @@ function Board() {
   }
   
   return (
-    <div className=" flex-col items-center">
+    <div className="flex flex-col items-center">
       <div className="text-4xl font-bold mb-8 text-green-700">{status}</div>
       {renderBoard()}
       <button
-  className="bg-green-800 text-white px-6 py-3 mt-8  rounded-lg hover:bg-green-500 transition-transform transform hover:scale-105 "
-  onClick={restart}
->
-  Restart
-</button>
-
+        className="bg-green-800 text-white px-6 py-3 mt-8 rounded-lg hover:bg-green-500 transition-transform transform hover:scale-105"
+        onClick={restart}
+      >
+        Restart
+      </button>
     </div>
   );
   
